@@ -1,10 +1,12 @@
-import { CreateCategoryService } from '../../../domain/usecases/categories/create'
-import { ICategoryRepository as CreateCategoryRepo } from '../../contracts/repositories'
+import { ICreateCategoryService } from '../../../domain/usecases/categories'
+import { IDbRepository } from '../../contracts'
 import { Category } from '../../entities'
 
-type setup = (categoryRepo: CreateCategoryRepo) => CreateCategoryService
+export class CreateCategoryService implements ICreateCategoryService {
+  constructor(private readonly categoryRepo: IDbRepository) {}
 
-export const setupCreateCategory: setup = (categoryRepo) => (params) => {
-  const newCategory = new Category(params)
-  categoryRepo.create(newCategory)
+  async handle(params: ICreateCategoryService.Input): Promise<void> {
+    const newCategory = new Category(params)
+    this.categoryRepo.create(newCategory)
+  }
 }

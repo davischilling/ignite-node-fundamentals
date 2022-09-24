@@ -1,19 +1,14 @@
-import { ICreateCategoryDTO } from '../../../domain/DTOs/categories'
-import { CreateCategoryService } from '../../../domain/usecases/categories'
-import { badRequest, created, HttpResponse } from '../../helpers'
+import { ICreateCategoryService } from '../../../domain/usecases/categories'
+import { created, HttpResponse } from '../../helpers'
 import { Controller } from '../controller'
 
 export class CreateCategoryController extends Controller {
-  constructor(private readonly createCategory: CreateCategoryService) {
+  constructor(private readonly createCategoryService: ICreateCategoryService) {
     super()
   }
 
-  perform(params: ICreateCategoryDTO): HttpResponse {
-    try {
-      this.createCategory(params)
-      return created({ message: 'category created' })
-    } catch (error) {
-      return badRequest(error)
-    }
+  async perform(httpRequest: any): Promise<HttpResponse> {
+    await this.createCategoryService.handle(httpRequest)
+    return created({ message: 'category created' })
   }
 }

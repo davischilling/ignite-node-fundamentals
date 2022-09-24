@@ -6,7 +6,7 @@ type Adapter = (controller: Controller) => RequestHandler
 
 export const adaptExpressRoute: Adapter = (controller) => async (req, res) => {
   const { file } = req
-  const { statusCode, data } = controller.handle({
+  const { statusCode, data } = await controller.handle({
     file,
     ...req.body,
     ...req.query,

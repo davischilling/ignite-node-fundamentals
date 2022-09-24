@@ -1,18 +1,16 @@
-import { FindAllCategoriesService } from '../../../domain/usecases/categories'
-import { serverError, ok, HttpResponse } from '../../helpers'
+import { IFindAllCategoriesService } from '../../../domain/usecases/categories'
+import { HttpResponse, ok } from '../../helpers'
 import { Controller } from '../controller'
 
-export class FindAllController extends Controller {
-  constructor(private readonly findAllCategory: FindAllCategoriesService) {
+export class FindAllCategoriesController extends Controller {
+  constructor(
+    private readonly findAllCategoriesService: IFindAllCategoriesService
+  ) {
     super()
   }
 
-  perform(): HttpResponse {
-    try {
-      const categories = this.findAllCategory()
-      return ok(categories)
-    } catch (error) {
-      return serverError(new Error('Server error'))
-    }
+  async perform(): Promise<HttpResponse> {
+    const categories = await this.findAllCategoriesService.handle()
+    return ok({ categories })
   }
 }

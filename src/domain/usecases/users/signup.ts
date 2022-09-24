@@ -1,8 +1,12 @@
 import { ISignUpDTO } from '../../DTOs/users'
 
-export namespace SignUpUser {
+export namespace ISignUpUserService {
   export type Input = ISignUpDTO
-  export type output = { token: string }
+  export type Output = { token: string }
 }
 
-export type SignUpUserService = (params: SignUpUser.Input) => SignUpUser.output
+export interface ISignUpUserService {
+  handle: (
+    params: ISignUpUserService.Input
+  ) => Promise<ISignUpUserService.Output>
+}

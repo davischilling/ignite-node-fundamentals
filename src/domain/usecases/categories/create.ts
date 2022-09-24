@@ -1,7 +1,9 @@
 import { ICreateCategoryDTO } from '../../DTOs/categories'
 
-export namespace CreateCategory {
+export namespace ICreateCategoryService {
   export type Input = ICreateCategoryDTO
 }
 
-export type CreateCategoryService = (params: CreateCategory.Input) => void
+export interface ICreateCategoryService {
+  handle: (params: ICreateCategoryService.Input) => Promise<void>
+}

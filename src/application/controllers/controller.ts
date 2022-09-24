@@ -1,15 +1,12 @@
 import { HttpResponse, serverError } from '../helpers'
 
 export abstract class Controller {
-  abstract perform(httpRequest: any): HttpResponse
+  abstract perform(httpRequest: any): Promise<HttpResponse>
 
-  handle(httpRequest: any): HttpResponse {
+  async handle(httpRequest: any): Promise<HttpResponse> {
     try {
-      return this.perform(httpRequest)
+      return await this.perform(httpRequest)
     } catch (error: any) {
-      // if (process.env.NODE_ENV === 'development') {
-      //   console.log(error)
-      // }
       return serverError(error)
     }
   }

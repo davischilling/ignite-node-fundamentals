@@ -1,17 +1,30 @@
-import { SignInUserService } from '../../../domain/usecases/users'
-import { IUserRepository as SignInUserRepo } from '../../contracts/repositories'
+import { NotFoundError, ValidationError } from '../../../application/errors'
+import { ISignInUserService } from '../../../domain/usecases/users'
+import { IDbRepository, IAuthentication, IEncrypter } from '../../contracts'
 
-type setup = (userRepo: SignInUserRepo) => SignInUserService
+export class SignInUserService implements ISignInUserService {
+  constructor(
+    private readonly userRepo: IDbRepository,
+    private readonly encrypter: IEncrypter,
+    private readonly userAuthentication: IAuthentication
+  ) {}
 
-export const setupSignInUser: setup =
-  (userRepo) =>
-  ({ email, password }) => {
-    const user = userRepo.findOne({ email })
+  async handle({
+    email,
+    password,
+  }: ISignInUserService.Input): Promise<ISignInUserService.Output> {
+    const user = this.userRepo.findOne({ email })
     if (!user) {
-      throw new Error('User not found')
+      throw new NotFoundError('User')
     }
-    if (user.password !== password) {
-      throw new Error('Invalid credentials')
+    const passwordsMath = await this.encrypter.comparePasswords(
+      user.password,
+      password
+    )
+    if (!passwordsMath) {
+      throw new ValidationError("Passwords don't match")
     }
-    return { token: 'token' }
+    const token = this.userAuthentication.auth(user.id)
+    return { token }
   }
+}

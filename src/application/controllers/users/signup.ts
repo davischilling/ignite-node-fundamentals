@@ -1,19 +1,19 @@
-import { ISignUpDTO } from '../../../domain/DTOs/users'
-import { SignUpUserService } from '../../../domain/usecases/users'
-import { badRequest, created, HttpResponse } from '../../helpers'
+import { ISignUpUserService } from '../../../domain/usecases/users'
+import { created, HttpResponse } from '../../helpers'
+import { httpResponseErros } from '../../utils/httpResponseErrors'
 import { Controller } from '../controller'
 
 export class SignUpController extends Controller {
-  constructor(private readonly SignUpUser: SignUpUserService) {
+  constructor(private readonly SignUpUserService: ISignUpUserService) {
     super()
   }
 
-  perform(params: ISignUpDTO): HttpResponse {
+  async perform(httpRequest: any): Promise<HttpResponse> {
     try {
-      const token = this.SignUpUser(params)
+      const token = await this.SignUpUserService.handle(httpRequest)
       return created(token)
-    } catch (error) {
-      return badRequest(error)
+    } catch (err) {
+      return httpResponseErros(err)
     }
   }
 }

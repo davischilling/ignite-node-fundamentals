@@ -4,19 +4,16 @@ import fs from 'fs'
 import multer from 'multer'
 
 import { adaptExpressRoute as adaptCtrl } from '../adapters/express-router'
-import {
-  makeCreateCategory,
-  makeFindAllCategory,
-} from '../factories/categories'
+import { makeCreateCategory, makeFindAllCategory } from '../factories/entities'
 
 const upload = multer({
   dest: './tmp',
 })
 
 const categoriesRoutes = async (router: Router) => {
-  router.post('/categories', adaptCtrl(makeCreateCategory()))
+  router.post('/categories', adaptCtrl(await makeCreateCategory()))
 
-  router.get('/categories', adaptCtrl(makeFindAllCategory()))
+  router.get('/categories', adaptCtrl(await makeFindAllCategory()))
 
   router.post(
     '/categories/import',

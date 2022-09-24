@@ -1,8 +1,10 @@
-import { FindAllCategoriesService } from '../../../domain/usecases/categories'
-import { ICategoryRepository as FindAllCategoriesRepo } from '../../contracts/repositories'
+import { IFindAllCategoriesService } from '../../../domain/usecases/categories'
+import { IDbRepository } from '../../contracts'
 
-type setup = (categoryRepo: FindAllCategoriesRepo) => FindAllCategoriesService
+export class FindAllCategoriesService implements IFindAllCategoriesService {
+  constructor(private readonly categoryRepo: IDbRepository) {}
 
-export const setupFindAllCategory: setup = (categoryRepo) => () => {
-  return categoryRepo.findAll()
+  async handle(): Promise<IFindAllCategoriesService.Output> {
+    return this.categoryRepo.findAll()
+  }
 }

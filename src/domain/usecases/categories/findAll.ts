@@ -1,7 +1,9 @@
 import { CategoryModel } from '../../models'
 
-export namespace FindAllCategories {
+export namespace IFindAllCategoriesService {
   export type Output = CategoryModel[]
 }
 
-export type FindAllCategoriesService = () => FindAllCategories.Output
+export interface IFindAllCategoriesService {
+  handle: () => Promise<IFindAllCategoriesService.Output>
+}

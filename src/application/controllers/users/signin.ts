@@ -1,19 +1,19 @@
-import { ISignInDTO } from '../../../domain/DTOs/users'
-import { SignInUserService } from '../../../domain/usecases/users'
-import { badRequest, created, HttpResponse } from '../../helpers'
+import { ISignInUserService } from '../../../domain/usecases/users'
+import { created, HttpResponse } from '../../helpers'
+import { httpResponseErros } from '../../utils/httpResponseErrors'
 import { Controller } from '../controller'
 
 export class SignInController extends Controller {
-  constructor(private readonly SignInUser: SignInUserService) {
+  constructor(private readonly SignInUserService: ISignInUserService) {
     super()
   }
 
-  perform(params: ISignInDTO): HttpResponse {
+  async perform(httpRequest: any): Promise<HttpResponse> {
     try {
-      const token = this.SignInUser(params)
+      const token = await this.SignInUserService.handle(httpRequest)
       return created(token)
-    } catch (error) {
-      return badRequest(error)
+    } catch (err) {
+      return httpResponseErros(err)
     }
   }
 }
