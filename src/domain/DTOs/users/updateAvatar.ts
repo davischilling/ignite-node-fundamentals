@@ -1,3 +1,3 @@
-export interface IUpdateUserAvatarSDTO {
+export interface IUpdateUserAvatarRequestDTO {
   file: any
 }

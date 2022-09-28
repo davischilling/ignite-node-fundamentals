@@ -1,7 +1,7 @@
-import { ISignUpDTO } from '../../DTOs/users'
+import { ISignUpRequestDTO } from '../../DTOs/users'
 
 export namespace ISignUpUserService {
-  export type Input = ISignUpDTO
+  export type Input = ISignUpRequestDTO
   export type Output = { token: string }
 }
 

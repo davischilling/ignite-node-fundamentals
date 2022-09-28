@@ -1,7 +1,8 @@
 import { v4 as uuid } from 'uuid'
+// import { Expose } from 'class-transformer'
 
+import { IFindAllUsersResponseDTO } from '../../domain/DTOs/users'
 import { UserModel } from '../../domain/models'
-import { UpdateUserAvatarService } from '../services/users/updateAvatar'
 
 export class User implements UserModel {
   id: string
@@ -31,6 +32,36 @@ export class User implements UserModel {
     this.password = password
     if (avatar) {
       this.avatar = avatar
+    }
+  }
+
+  static toDTO({
+    id,
+    name,
+    username,
+    email,
+    avatar,
+  }: UserModel): IFindAllUsersResponseDTO {
+    const avatar_url = User.getAvatarUrl(avatar)
+    return {
+      id,
+      name,
+      username,
+      email,
+      avatar: avatar_url,
+    }
+  }
+
+  static getAvatarUrl(avatar: string): string | null {
+    switch (process.env.NODE_ENV) {
+      case 'production': {
+        return `${process.env.AWS_BUCKET_URL}/avatar/${avatar}`
+      }
+      case 'development': {
+        return `${process.env.APP_API_URL}/avatar/${avatar}`
+      }
+      default:
+        return null
     }
   }
 }

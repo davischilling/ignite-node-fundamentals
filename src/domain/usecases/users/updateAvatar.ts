@@ -1,8 +1,8 @@
-import { IUpdateUserAvatarSDTO } from '../../DTOs/users'
+import { IUpdateUserAvatarRequestDTO } from '../../DTOs/users'
 import { UserModel } from '../../models/User'
 
 export namespace IUpdateUserAvatarService {
-  export type Input = IUpdateUserAvatarSDTO & { user: UserModel }
+  export type Input = IUpdateUserAvatarRequestDTO & { user: UserModel }
 }
 
 export interface IUpdateUserAvatarService {
