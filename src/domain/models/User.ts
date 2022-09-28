@@ -5,5 +5,6 @@ export type UserModel = {
   email: string
   password: string
   isAdmin: boolean
+  avatar?: string
   created_at: Date
 }

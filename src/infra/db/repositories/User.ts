@@ -16,4 +16,10 @@ export class UserRepository implements IDbRepository {
   create(params: User): void {
     userSchema.push(params)
   }
+  update(id: string, params: any): any {
+    const userToUpdateIndex = userSchema.findIndex((el) => el.id === id)
+    if (userToUpdateIndex >= 0) {
+      userSchema[userToUpdateIndex] = params
+    }
+  }
 }

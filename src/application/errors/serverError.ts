@@ -3,5 +3,6 @@ export class ServerError extends Error {
     super('Server failed. Try again soon.')
     this.name = 'ServerError'
     this.stack = error?.stack
+    this.message = error.message
   }
 }

@@ -7,16 +7,13 @@ import {
 import {
   badRequest,
   forbidden,
-  httpException,
   HttpResponse,
   notFound,
+  serverError,
   unauthorized,
 } from '../helpers'
 
-export const httpResponseErros = (
-  err: Error,
-  exceptionStatus?: number
-): HttpResponse => {
+export const httpResponseErros = (err: Error): HttpResponse => {
   if (err instanceof ValidationError) {
     return badRequest(err)
   }
@@ -29,5 +26,5 @@ export const httpResponseErros = (
   if (err instanceof NotFoundError) {
     return notFound(err)
   }
-  return httpException({ status: exceptionStatus, _err: err })
+  return serverError(err)
 }

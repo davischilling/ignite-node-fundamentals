@@ -17,4 +17,10 @@ export class CategoryRepository implements IDbRepository {
   findAll() {
     return categorySchema
   }
+  update(id: string, params: any): any {
+    const categoryToUpdateIndex = categorySchema.findIndex((el) => el.id === id)
+    if (categoryToUpdateIndex > 0) {
+      categorySchema[categoryToUpdateIndex] = params
+    }
+  }
 }

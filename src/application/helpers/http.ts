@@ -1,6 +1,5 @@
 import {
   ForbiddenError,
-  HttpException,
   NotFoundError,
   ServerError,
   UnauthorizedError,
@@ -50,17 +49,7 @@ export const notFound = (
   data: error,
 })
 
-export const serverError = (error: any): HttpResponse<ServerError> => ({
+export const serverError = (error: ServerError): HttpResponse<ServerError> => ({
   statusCode: 500,
-  data: new ServerError(error),
-})
-
-type httpExceptionType = { status: number; _err: Error }
-
-export const httpException = ({
-  status = 400,
-  _err,
-}: httpExceptionType): HttpResponse<HttpException> => ({
-  statusCode: status,
-  data: new HttpException(status, _err.message),
+  data: error,
 })

@@ -1,13 +1,19 @@
 import { RequestHandler } from 'express'
 
 import { Controller } from '../../application/controllers/controller'
+import { UserModel } from '../../domain/models'
 
 type Adapter = (controller: Controller) => RequestHandler
 
 export const adaptExpressRoute: Adapter = (controller) => async (req, res) => {
   const { file } = req
+  let user: UserModel
+  if (req.user) {
+    user = req.user
+  }
   const { statusCode, data } = await controller.handle({
     file,
+    user,
     ...req.body,
     ...req.query,
     ...req.params,
