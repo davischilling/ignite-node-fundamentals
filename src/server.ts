@@ -1,3 +1,5 @@
+import { Express } from 'express'
+
 import app from './main/config/app'
 // import { AppDataSource } from './main/config/database'
 
@@ -9,6 +11,11 @@ import app from './main/config/app'
 //     console.error('Error during Data Source initialization', err)
 //   })
 
-app.listen(3333, () => {
-  console.log('Running server on port 3333')
-})
+const start = async (app: Express): Promise<void> => {
+  const port = process.env.PORT
+  app.listen(port, () => {
+    console.log(`Running server on port ${port}`)
+  })
+}
+
+start(app)
